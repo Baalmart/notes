@@ -1,13 +1,19 @@
 var express = require("express");
+const dotenv = require("dotenv");
+dotenv.config();
 var path = require("path");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 var index = require("./routes/index");
 var users = require("./routes/users");
-const api = require("../routes/api");
+const api = require("./routes/api");
+
+const dbURI = "mongodb://localhost/notes";
+const db = mongoose.connection;
 
 var app = express();
 
@@ -43,6 +49,25 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+//connection to local db
+mongoose.connect(dbURI);
+
+db.on("error", error => {
+  console.log("database connection error" + error);
+});
+
+//after a db disconnection
+db.on("disconnected", () => {});
+
+//when nodejs stops
+process.on("unhandledRejection", (reason, p) => {
+  console.log("Unhandled Rejection at: Promise", p, "reason:", reason);
+  db.close(() => {
+    console.log("mongoose is disconnected through the app");
+    process.exit(0);
+  });
 });
 
 module.exports = app;
