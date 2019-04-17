@@ -1,6 +1,6 @@
 {
     "env": {
-        "browser": true,
+        "node": true,
         "commonjs": true,
         "es6": true
     },
@@ -12,5 +12,7 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
-    "rules": {}
+    "rules": {
+        "no-console": "off"
+    }
 }
