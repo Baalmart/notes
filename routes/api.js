@@ -9,17 +9,33 @@ require("../passport");
 /***joining the app */
 router.post("/register", joinController.register);
 
+router.post("/login", joinController.login);
+
+/* creating notes. */
 router.post(
-  "/login",
+  "/notes/create/:user",
   passport.authenticate("jwt", {
     session: false
   }),
-  joinController.login
+  notesController.create
+);
+router.get(
+  "/notes/view/:user",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  notesController.view
+);
+router.put(
+  "/notes/update/:note",
+  passport.authenticate("jwt", {
+    session: false
+  }),
+  notesController.update
 );
 
-/* creating notes. */
-router.post("/create", notesController.create);
-router.delete("/delete", notesController.delete);
-router.get("/view", notesController.view);
+router.delete("/notes/delete/:note", passport.authenticate("jwt", {
+  session: false
+}), notesController.delete);
 
 module.exports = router;
