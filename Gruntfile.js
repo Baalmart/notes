@@ -6,8 +6,8 @@ module.exports = function(grunt) {
     //mocha task
     mochaTest: {
       all: {
-        src: ["tests/**/*.js"],
-        option: {
+        src: ["test/*.js"],
+        options: {
           run: true
         }
       }
@@ -15,5 +15,5 @@ module.exports = function(grunt) {
   }); // end of configuration
 
   grunt.loadNpmTasks("grunt-mocha-test");
-  grunt.registerTask("default", ["mochaTest:all"]);
+  grunt.registerTask("default", ["mochaTest"]);
 };
